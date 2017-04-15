@@ -8,7 +8,7 @@ import ir.ac.iust.dml.kg.raw.utils.ConfigReader;
 import ir.ac.iust.dml.kg.virtuoso.jena.driver.VirtGraph;
 import org.junit.Test;
 
-public class Tester {
+public class JenaTester {
 
   @Test
   public void test() {
@@ -51,14 +51,14 @@ public class Tester {
                     "WHERE {\n" +
                     "<http://fkg.iust.ac.ir/test/s1> ?p ?o .\n" +
                     "}";
-    Query query = QueryFactory.create(queryString);
-    QueryExecution qexec = QueryExecutionFactory.create(query, model);
-    ResultSet results = qexec.execSelect();
+    final Query query = QueryFactory.create(queryString);
+    final QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    final ResultSet results = qexec.execSelect();
 
     while (results.hasNext()) {
-      QuerySolution binding = results.nextSolution();
-      Resource p = (Resource) binding.get("p");
-      RDFNode o = binding.get("o");
+      final QuerySolution binding = results.nextSolution();
+      final Resource p = (Resource) binding.get("p");
+      final RDFNode o = binding.get("o");
       System.out.println("predicate: " + p.toString() + " object: " + o.toString());
       assert p.toString().equals(predicate1.toString());
     }
