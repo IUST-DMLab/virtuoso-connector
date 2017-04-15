@@ -19,7 +19,7 @@ public class Tester {
 
     List<VirtuosoTriple> triples = connector.getTriplesOfSubject("s1");
     for (VirtuosoTriple t : triples) {
-      final String value = t.getObject().getValue();
+      final String value = t.getObject().getValue().toString();
       switch (t.getObject().getType()) {
         case Double:
           assert value.equals("0.2");
