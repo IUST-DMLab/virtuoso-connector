@@ -112,16 +112,16 @@ public class VirtuosoConnector {
     else if (o instanceof Literal) {
       final Literal l = (Literal) o;
       final VirtuosoTripleType type;
-      final String value;
+      final Object value;
       if (l.getDatatypeURI().endsWith("long")) {
         type = VirtuosoTripleType.Long;
-        value = l.getLong() + "";
+        value = l.getLong();
       } else if (l.getDatatypeURI().endsWith("int")) {
         type = VirtuosoTripleType.Int;
-        value = l.getInt() + "";
+        value = l.getInt();
       } else if (l.getDatatypeURI().endsWith("double")) {
         type = VirtuosoTripleType.Double;
-        value = l.getDouble() + "";
+        value = l.getDouble();
       } else {
         type = VirtuosoTripleType.String;
         value = l.getString();
