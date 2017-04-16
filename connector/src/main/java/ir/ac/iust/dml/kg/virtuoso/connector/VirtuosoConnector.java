@@ -10,6 +10,7 @@ import ir.ac.iust.dml.kg.virtuoso.connector.data.VirtuosoTripleObject;
 import ir.ac.iust.dml.kg.virtuoso.connector.data.VirtuosoTripleType;
 import ir.ac.iust.dml.kg.virtuoso.jena.driver.VirtGraph;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class VirtuosoConnector {
   }
 
   public List<VirtuosoTriple> getTriplesOfSubject(String subject) {
-    subject = subject.contains("://") ? subject : graphName + subject;
+    subject = subject.contains("://") ? subject : graphName + URLEncoder.encode(subject);
     String queryString =
             "SELECT ?p ?o\n" +
                     "WHERE {\n" +
