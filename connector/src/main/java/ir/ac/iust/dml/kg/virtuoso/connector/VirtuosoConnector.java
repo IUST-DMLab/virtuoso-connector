@@ -130,4 +130,8 @@ public class VirtuosoConnector {
     }
     return null;
   }
+
+  public void close() {
+    graph.close();
+  }
 }
