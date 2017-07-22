@@ -98,13 +98,18 @@ public class VirtuosoConnector {
     }
 
     public List<VirtuosoTriple> getTriplesOfObject(String predicate, String object) {
+        return getTriplesOfObject(predicate, object, 0, -1);
+    }
+
+    public List<VirtuosoTriple> getTriplesOfObject(String predicate, String object, int page, int pageSize) {
         object = object.contains("://") ? object : graphName + object;
         predicate = predicate.contains("://") ? predicate : graphName + predicate;
         String queryString =
-                "SELECT ?s\n" +
-                        "WHERE {\n" +
-                        "?s <" + predicate + "> <" + object + "> .\n" +
-                        "}";
+            "SELECT ?s\n" +
+                "WHERE {\n" +
+                "?s <" + predicate + "> <" + object + "> .\n" +
+                "}"
+                + ((page >= 0 && pageSize >= 0) ? " OFFSET " + (page * pageSize) + " LIMIT " + pageSize : "");
         final Query query = QueryFactory.create(queryString);
         final QueryExecution exec = QueryExecutionFactory.create(query, model);
         final ResultSet results = exec.execSelect();
