@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Created by ali on 4/16/17.
  */
-public class AliTest {
+public class AliTestTester {
     @Test
     public void test() throws UnsupportedEncodingException {
-        final String GRAPH_NAME = "http://localhost:8890/knowledgeGraph";
+        final String GRAPH_NAME = "http://localhost:8890/knowledgeGraphV2";
 
         final VirtuosoConnector connector = new VirtuosoConnector(GRAPH_NAME);
 
