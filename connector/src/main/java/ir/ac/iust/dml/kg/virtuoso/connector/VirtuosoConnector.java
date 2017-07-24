@@ -73,6 +73,12 @@ public class VirtuosoConnector {
             final RDFNode o = binding.get("o");
             result.add(new VirtuosoTriple(subject, p.toString(), convertObject(o)));
         }
+
+        try {
+            exec.close();
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
         return result;
     }
 
@@ -93,6 +99,12 @@ public class VirtuosoConnector {
             final QuerySolution binding = results.nextSolution();
             final RDFNode o = binding.get("o");
             result.add(new VirtuosoTriple(subject, predicate, convertObject(o)));
+        }
+
+        try {
+            exec.close();
+        } catch (Throwable th) {
+            th.printStackTrace();
         }
         return result;
     }
@@ -120,6 +132,17 @@ public class VirtuosoConnector {
             final RDFNode s = binding.get("s");
             result.add(new VirtuosoTriple(s.toString(), predicate, convertObject(object)));
         }
+        try {
+            exec.close();
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
+        try {
+            exec.close();
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
         return result;
     }
 
@@ -130,6 +153,12 @@ public class VirtuosoConnector {
 
         final List<QuerySolution> result = new ArrayList<>();
         while (results.hasNext()) result.add(results.nextSolution());
+
+        try {
+            exec.close();
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
         return result;
     }
 

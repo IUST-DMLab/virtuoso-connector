@@ -63,6 +63,11 @@ public class JenaTester {
       assert p.toString().equals(predicate1.toString());
     }
 
+    try {
+      qexec.close();
+    } catch (Throwable th) {
+      th.printStackTrace();
+    }
     for (Triple t : triples) graph.remove(t);
     assert size - 6 == graph.size();
 
