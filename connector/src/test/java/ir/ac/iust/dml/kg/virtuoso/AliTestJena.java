@@ -4,15 +4,11 @@ import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
 import ir.ac.iust.dml.kg.raw.utils.ConfigReader;
-import ir.ac.iust.dml.kg.virtuoso.connector.VirtuosoConnector;
-import ir.ac.iust.dml.kg.virtuoso.connector.data.VirtuosoTriple;
 import ir.ac.iust.dml.kg.virtuoso.jena.driver.VirtGraph;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 /**
  * Created by ali on 4/16/17.
@@ -44,5 +40,11 @@ public class AliTestJena {
             System.out.println("className: " + o.toString());
             assert o.toString().substring(0,o.toString().lastIndexOf("@")).equals("مقام دولتی");
         }
+
+      try {
+        qexec.close();
+      } catch (Throwable th) {
+        th.printStackTrace();
+      }
     }
 }
