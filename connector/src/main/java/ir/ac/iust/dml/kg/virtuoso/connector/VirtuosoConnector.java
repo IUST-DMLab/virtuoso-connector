@@ -41,6 +41,20 @@ public class VirtuosoConnector {
         graph.clear();
     }
 
+    public void removeResource(String subject, String predicate, String object) {
+        final Node s = Node.createURI(subject.contains("://") ? subject : graphName + subject);
+        final Node p = Node.createURI(predicate.contains("://") ? predicate : graphName + predicate);
+        final Node o = Node.createURI(object.contains("://") ? object : graphName + object);
+        graph.remove(s, p, o);
+    }
+
+    public void removeLiteral(String subject, String predicate, Object object) {
+        final Node s = Node.createURI(subject.contains("://") ? subject : graphName + subject);
+        final Node p = Node.createURI(predicate.contains("://") ? predicate : graphName + predicate);
+        final Literal o = ResourceFactory.createTypedLiteral(object);
+        graph.remove(s, p, o.asNode());
+    }
+
     public void addResource(String subject, String predicate, String object) {
         final Node s = Node.createURI(subject.contains("://") ? subject : graphName + subject);
         final Node p = Node.createURI(predicate.contains("://") ? predicate : graphName + predicate);

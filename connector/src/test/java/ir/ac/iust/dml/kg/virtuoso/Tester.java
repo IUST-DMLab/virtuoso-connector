@@ -35,5 +35,11 @@ public class Tester {
     triples = connector.getTriples("s1", "p2");
     assert triples.size() == 1;
     assert triples.get(0).getObject().getValue().equals("string");
+
+    connector.removeResource("s1", "p1", "o1");
+    connector.removeLiteral("s1", "p2", "string");
+    connector.removeLiteral("s1", "p1", 0.2);
+    triples = connector.getTriplesOfSubject("s1");
+    assert triples.isEmpty();
   }
 }
