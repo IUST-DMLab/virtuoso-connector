@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>virtuoso</groupId>
-  <artifactId>virtjdbc4</artifactId>
-  <version>4.0</version>
+  <groupId>com.openlinksw.virtuoso</groupId>
+  <artifactId>virt_rdf4j</artifactId>
+  <version>1.0</version>
   <description>POM was created from install:install-file</description>
 </project>

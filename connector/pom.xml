@@ -7,7 +7,7 @@
 
   <groupId>ir.ac.iust.dml.kg.vituoso</groupId>
   <artifactId>connector</artifactId>
-  <version>0.2.3</version>
+  <version>0.2.5</version>
   <name>Knowledge Graph Virtuoso Connector</name>
   <packaging>jar</packaging>
 
@@ -78,51 +78,19 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>virtuoso</groupId>
-      <artifactId>virtjdbc4</artifactId>
-      <version>4.0</version>
+      <groupId>com.openlinksw.virtuoso</groupId>
+      <artifactId>virt_rdf4j</artifactId>
+      <version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-core</artifactId>
-      <version>2.10.0</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>com.openlinksw.virtuoso</groupId>
+      <artifactId>virtjdbc</artifactId>
+      <version>4.2</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-arq</artifactId>
-      <version>2.10.0</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>jcl-over-slf4j</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-runtime</artifactId>
+      <version>2.1.6</version>
     </dependency>
   </dependencies>
 </project>
