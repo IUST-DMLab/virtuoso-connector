@@ -49,28 +49,18 @@ public class VirtuosoConnector {
   }
 
   public void removeResource(String subject, String predicate, String object) {
-    subject = subject.contains("://") ? subject : graphName + subject;
-    predicate = predicate.contains("://") ? predicate : graphName + predicate;
-    object = object.contains("://") ? object : graphName + object;
     con.remove(factory.createIRI(subject), factory.createIRI(predicate), factory.createIRI(object));
   }
 
   public void removeLiteral(String subject, String predicate, Object object) {
-    subject = subject.contains("://") ? subject : graphName + subject;
-    predicate = predicate.contains("://") ? predicate : graphName + predicate;
     con.remove(factory.createIRI(subject), factory.createIRI(predicate), createLiteral(object));
   }
 
   public void addResource(String subject, String predicate, String object) {
-    subject = subject.contains("://") ? subject : graphName + subject;
-    predicate = predicate.contains("://") ? predicate : graphName + predicate;
-    object = object.contains("://") ? object : graphName + object;
     con.add(factory.createIRI(subject), factory.createIRI(predicate), factory.createIRI(object));
   }
 
   public void addLiteral(String subject, String predicate, Object object) {
-    subject = subject.contains("://") ? subject : graphName + subject;
-    predicate = predicate.contains("://") ? predicate : graphName + predicate;
     con.add(factory.createIRI(subject), factory.createIRI(predicate), createLiteral(object));
   }
 
