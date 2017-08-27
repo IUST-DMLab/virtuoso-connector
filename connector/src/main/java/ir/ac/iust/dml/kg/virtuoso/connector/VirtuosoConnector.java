@@ -23,8 +23,8 @@ import java.util.List;
 public class VirtuosoConnector {
 
   private static ValueFactory factory = SimpleValueFactory.getInstance();
-  private final RepositoryConnection con;
-  final private String graphName;
+  private RepositoryConnection con;
+  private final VirtuosoRepository repository;
 
   public VirtuosoConnector() {
     this("http://fkg.iust.ac.ir/");
@@ -38,30 +38,69 @@ public class VirtuosoConnector {
   }
 
   public VirtuosoConnector(String graphName, String serverAddress, String username, String password) {
-    this.graphName = graphName;
-    VirtuosoRepository repository = new VirtuosoRepository("jdbc:virtuoso://" + serverAddress,
+    repository = new VirtuosoRepository("jdbc:virtuoso://" + serverAddress + "/autoReconnect=true/charset=UTF-8",
         username, password, graphName);
+    repository.setQueryTimeout(300000);
     con = repository.getConnection();
   }
 
-  public void clear() {
-    con.clear();
+  public boolean clear() {
+    try {
+      con.clear();
+      return true;
+    } catch (Throwable th) {
+      handle(th);
+      return false;
+    }
   }
 
-  public void removeResource(String subject, String predicate, String object) {
-    con.remove(factory.createIRI(subject), factory.createIRI(predicate), factory.createIRI(object));
+  public boolean removeResource(String subject, String predicate, String object) {
+    try {
+      con.remove(factory.createIRI(subject), factory.createIRI(predicate), factory.createIRI(object));
+      return true;
+    } catch (Throwable th) {
+      handle(th);
+      return false;
+    }
   }
 
-  public void removeLiteral(String subject, String predicate, Object object) {
-    con.remove(factory.createIRI(subject), factory.createIRI(predicate), createLiteral(object));
+  private void handle(Throwable th) {
+    th.printStackTrace();
+    try {
+      con.close();
+      con = repository.getConnection();
+    } catch (Throwable ignored) {
+    }
   }
 
-  public void addResource(String subject, String predicate, String object) {
-    con.add(factory.createIRI(subject), factory.createIRI(predicate), factory.createIRI(object));
+  public boolean removeLiteral(String subject, String predicate, Object object) {
+    try {
+      con.remove(factory.createIRI(subject), factory.createIRI(predicate), createLiteral(object));
+      return true;
+    } catch (Throwable th) {
+      handle(th);
+      return false;
+    }
   }
 
-  public void addLiteral(String subject, String predicate, Object object) {
-    con.add(factory.createIRI(subject), factory.createIRI(predicate), createLiteral(object));
+  public boolean addResource(String subject, String predicate, String object) {
+    try {
+      con.add(factory.createIRI(subject), factory.createIRI(predicate), factory.createIRI(object));
+      return true;
+    } catch (Throwable th) {
+      handle(th);
+      return false;
+    }
+  }
+
+  public boolean addLiteral(String subject, String predicate, Object object) {
+    try {
+      con.add(factory.createIRI(subject), factory.createIRI(predicate), createLiteral(object));
+      return true;
+    } catch (Throwable th) {
+      handle(th);
+      return false;
+    }
   }
 
   public List<VirtuosoTriple> getTriplesOfSubject(String subject) {
@@ -70,46 +109,43 @@ public class VirtuosoConnector {
             "WHERE {\n" +
             "<" + subject + "> ?p ?o .\n" +
             "}";
-    final List<VirtuosoTriple> converted = new ArrayList<>();
-    TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
-    final TupleQueryResult results = query.evaluate();
-
     try {
+      final List<VirtuosoTriple> converted = new ArrayList<>();
+      TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
+      final TupleQueryResult results = query.evaluate();
       while (results.hasNext()) {
         final BindingSet d = results.next();
         final String p = d.getBinding("p").getValue().stringValue();
         final Value o = d.getBinding("o").getValue();
         converted.add(new VirtuosoTriple(subject, p, convertObject(o)));
       }
+      return converted;
     } catch (Throwable th) {
-      th.printStackTrace();
+      handle(th);
+      return null;
     }
-    return converted;
   }
 
   public List<VirtuosoTriple> getTriples(String subject, String predicate) {
-    subject = subject.contains("://") ? subject : graphName + subject;
-    predicate = predicate.contains("://") ? predicate : graphName + predicate;
-    String queryString =
-        "SELECT ?o\n" +
-            "WHERE {\n" +
-            "<" + subject + "> <" + predicate + "> ?o .\n" +
-            "}";
-
-    final List<VirtuosoTriple> converted = new ArrayList<>();
-    TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
-    final TupleQueryResult results = query.evaluate();
-
     try {
+      String queryString =
+          "SELECT ?o\n" +
+              "WHERE {\n" +
+              "<" + subject + "> <" + predicate + "> ?o .\n" +
+              "}";
+      final List<VirtuosoTriple> converted = new ArrayList<>();
+      TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
+      final TupleQueryResult results = query.evaluate();
       while (results.hasNext()) {
         final BindingSet d = results.next();
         final Value o = d.getBinding("o").getValue();
         converted.add(new VirtuosoTriple(subject, predicate, convertObject(o)));
       }
+      return converted;
     } catch (Throwable th) {
-      th.printStackTrace();
+      handle(th);
+      return null;
     }
-    return converted;
   }
 
   public List<VirtuosoTriple> getTriplesOfObject(String predicate, String object) {
@@ -117,33 +153,35 @@ public class VirtuosoConnector {
   }
 
   public List<VirtuosoTriple> getTriplesOfObject(String predicate, String object, int page, int pageSize) {
-    object = object.contains("://") ? object : graphName + object;
-    predicate = predicate.contains("://") ? predicate : graphName + predicate;
     String queryString =
         "SELECT ?s\n" +
             "WHERE {\n" +
             "?s <" + predicate + "> <" + object + "> .\n" +
-            "}";
-
-    final List<VirtuosoTriple> converted = new ArrayList<>();
-    TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
-    final TupleQueryResult results = query.evaluate();
-
+            "}" + ((page >= 0 && pageSize >= 0) ? " OFFSET " + (page * pageSize) + " LIMIT " + pageSize : "");
     try {
+      final List<VirtuosoTriple> converted = new ArrayList<>();
+      TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
+      final TupleQueryResult results = query.evaluate();
       while (results.hasNext()) {
         final BindingSet d = results.next();
         final String subject = d.getBinding("s").getValue().stringValue();
         converted.add(new VirtuosoTriple(subject, predicate, convertObject(object)));
       }
+      return converted;
     } catch (Throwable th) {
-      th.printStackTrace();
+      handle(th);
+      return null;
     }
-    return converted;
   }
 
   public TupleQueryResult query(String queryString) {
-    TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
-    return query.evaluate();
+    try {
+      TupleQuery query = con.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
+      return query.evaluate();
+    } catch (Throwable th) {
+      handle(th);
+      return null;
+    }
   }
 
   public static VirtuosoTripleObject convertObject(String o) {
