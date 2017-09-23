@@ -1,3 +1,9 @@
+/*
+ * Farsi Knowledge Graph Project
+ *  Iran University of Science and Technology (Year 2017)
+ *  Developed by Ali Hadian.
+ */
+
 package ir.ac.iust.dml.kg.virtuoso;
 
 import ir.ac.iust.dml.kg.virtuoso.connector.VirtuosoConnector;
@@ -5,7 +11,6 @@ import ir.ac.iust.dml.kg.virtuoso.connector.data.VirtuosoTriple;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -19,7 +24,7 @@ public class AliTestTester {
         final VirtuosoConnector connector = new VirtuosoConnector(GRAPH_NAME);
 
         List<VirtuosoTriple> triples = connector.getTriplesOfSubject(
-                "http://fkg.iust.ac.ir/resources/حسن_روحانی");
+            "http://fkg.iust.ac.ir/resources/حسن_روحانی");
         for (VirtuosoTriple t : triples) {
             System.out.println(t.getPredicate() + " " + t.getObject().getValue());
         }
