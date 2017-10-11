@@ -7,6 +7,7 @@
 package ir.ac.iust.dml.kg.virtuoso.connector.data;
 
 public class VirtuosoTriple {
+  // Wrong name !!!
   private String source;
   private String predicate;
   private VirtuosoTripleObject object;
@@ -18,6 +19,10 @@ public class VirtuosoTriple {
     this.source = source;
     this.predicate = predicate;
     this.object = object;
+  }
+
+  public String getSubject() {
+    return source;
   }
 
   public String getSource() {

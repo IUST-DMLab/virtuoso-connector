@@ -216,11 +216,13 @@ public class VirtuosoConnector {
       final Literal l = (Literal) o;
       final VirtuosoTripleType type;
       final Object value;
+      final String dataType;
       if (l.getDatatype() == null) {
+        dataType = null;
         type = VirtuosoTripleType.String;
         value = l.stringValue();
       } else {
-        final String dataType = l.getDatatype().toString();
+        dataType = l.getDatatype().toString();
         if (dataType.endsWith("long")) {
           type = VirtuosoTripleType.Long;
           value = l.longValue();
@@ -233,6 +235,12 @@ public class VirtuosoConnector {
         } else if (dataType.endsWith("double")) {
           type = VirtuosoTripleType.Double;
           value = l.doubleValue();
+        } else if (dataType.endsWith("boolean")) {
+          type = VirtuosoTripleType.Boolean;
+          value = l.doubleValue();
+        } else if (dataType.endsWith("byte")) {
+          type = VirtuosoTripleType.Byte;
+          value = l.doubleValue();
         } else if (dataType.endsWith("float")) {
           type = VirtuosoTripleType.Float;
           value = l.doubleValue();
@@ -241,7 +249,7 @@ public class VirtuosoConnector {
           value = l.stringValue();
         }
       }
-      return new VirtuosoTripleObject(type, value,
+      return new VirtuosoTripleObject(type, dataType, value,
           l.getLanguage().isPresent() ? l.getLanguage().get() : "en");
     }
     return null;
