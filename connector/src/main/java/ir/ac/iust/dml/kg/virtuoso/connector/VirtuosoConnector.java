@@ -240,10 +240,13 @@ public class VirtuosoConnector {
           value = l.doubleValue();
         } else if (dataType.endsWith("byte")) {
           type = VirtuosoTripleType.Byte;
-          value = l.doubleValue();
+          value = l.byteValue();
         } else if (dataType.endsWith("float")) {
           type = VirtuosoTripleType.Float;
-          value = l.doubleValue();
+          value = l.floatValue();
+        } else if (dataType.endsWith("dateTime")) {
+          type = VirtuosoTripleType.DateTime;
+          value = l.calendarValue();
         } else {
           type = VirtuosoTripleType.String;
           value = l.stringValue();
