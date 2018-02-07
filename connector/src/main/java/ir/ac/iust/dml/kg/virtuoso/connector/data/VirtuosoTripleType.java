@@ -7,5 +7,5 @@
 package ir.ac.iust.dml.kg.virtuoso.connector.data;
 
 public enum VirtuosoTripleType {
-  Resource, String, Long, Int, Short, Float, Double, Boolean, Byte
+  Resource, String, Long, Int, Short, Float, Double, Boolean, DateTime, Byte
 }
